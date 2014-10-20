@@ -1,0 +1,136 @@
+<html> 
+    <head>
+        <title>This is my CSCI580 HW4.</title>
+        <style type="text/css"> 
+            #mycanvas{
+                background-color: #B4B2A5;
+            }
+            .buttons{
+                font-size: 18px;
+            }
+            .number{
+                width: 90px;
+            }
+            .forms{
+                width: 600px;
+            }
+            #canvasTd{
+                width: 600px
+            }
+        </style>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td id="canvasTd">
+                    <div>
+                        <canvas id="mycanvas" width="256" height="256">
+
+                        </canvas>
+                        <br/><br/>
+                        <input type="file" id="files" name="files[]" multiple />
+                    </div>
+                </td>
+                <td class="forms">
+                     <h2>Move Camera<h><font size="3">&nbsp;&nbsp;</font></h></h2>
+                    <table>
+                        <tr>
+                            <td>Move in line:&nbsp;&nbsp;</td>
+                            <td><input type="text" id="speedX" class="number" value="0"/></td>
+                            <td><input type="text" id="speedY" class="number" value="0"/></td>
+                            <td><input type="text" id="speedZ" class="number" value="0"/></td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Move direction:&nbsp;&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>nod speed(-30°~30°):</td><td><input type="text" id="nod" class="number" value="20"/></td>
+                        </tr>
+                        <tr>
+                            <td>shake speed(-30°~30°):</td><td><input type="text" id="shake" class="number" value="20"/></td>
+                        </tr>
+                        <br/>
+                    </table>
+                    <div>
+                        <input type="button" class="buttons" id="begin" value="Move Camera!" onclick="moveCamera()">
+                        <input type="button" class="buttons" id="begin" value="Rotate Pot!" onclick="movePot()">
+                        <!--<input type="button" class="buttons" id="end" value="End!">-->
+                    </div>
+                </td>
+            </tr>
+        </table>
+            <br/>
+        <table>
+            <tr>
+                <td id="cameraview" class="forms">
+                    <h2>Camera Settings<h><font size="3">&nbsp;&nbsp;</font></h></h2>
+                    <table>
+                        <tr>
+                            <td>Position:&nbsp;&nbsp;</td>
+                            <td><input type="text" id="positionX" class="number" value=""/></td>
+                            <td><input type="text" id="positionY" class="number" value=""/></td>
+                            <td><input type="text" id="positionZ" class="number" value=""/></td>
+                        </tr>
+                        <tr>
+                            <td>FOV:&nbsp;&nbsp;</td>
+                            <td><input type="text" id="FOV" class="number" value=""/></td>
+                        </tr>
+                        <tr>
+                            <td>Lookat:&nbsp;&nbsp;</td>
+                            <td><input type="text" id="lookatX" class="number" value=""/></td>
+                            <td><input type="text" id="lookatY" class="number" value=""/></td>
+                            <td><input type="text" id="lookatZ" class="number" value=""/></td>
+                        </tr>
+                        <tr>
+                            <td>WorldUp:&nbsp;&nbsp;</td>
+                            <td><input type="text" id="worldupX" class="number" value=""/></td>
+                            <td><input type="text" id="worldupY" class="number" value=""/></td>
+                            <td><input type="text" id="worldupZ" class="number" value=""/></td>
+                        </tr>
+                        <br/>
+                    </table>
+                    <div>
+                        <input type="button" class="buttons" value="Initialize camera!" onclick="startCamera()">
+                        <input type="button" class="buttons" value="Change camera settings!" onclick="resetCamera()">
+                        <!--<input type="button" class="buttons" id="end" value="End!">-->
+                    </div>
+                </td>
+                <td class="forms">
+                    <h2>Transform Pot<h><font size="3">&nbsp;&nbsp;</font></h></h2>
+                    <table>
+                        <tr>
+                            <td>Scale</td>
+                            <td>X:&nbsp;<input type="text" id="scaleX" class="number" /></td>
+                            <td>Y:&nbsp;<input type="text" id="scaleY" class="number" value=""/></td>
+                            <td>Z:&nbsp;<input type="text" id="scaleZ" class="number" value=""/></td>
+                        </tr>
+                        <tr>
+                            <td>Rotate</td>
+                            <td>X:&nbsp;<input type="text" id="rotateX" class="number" value=""/></td>
+                            <td>Y:&nbsp;<input type="text" id="rotateY" class="number" value=""/></td>
+                            <td>Z:&nbsp;<input type="text" id="rotateZ" class="number" value=""/></td>
+                        </tr>
+                        <tr>
+                            <td>Translate</td>
+                            <td>X:&nbsp;<input type="text" id="translateX" class="number" value=""/></td>
+                            <td>Y:&nbsp;<input type="text" id="translateY" class="number" value=""/></td>
+                            <td>Z:&nbsp;<input type="text" id="translateZ" class="number" value=""/></td>
+                        </tr>
+                        <br/>
+                    </table>
+                </td>
+                
+            </tr>
+        </table>
+        <br/><br/>
+        <INPUT TYPE="RADIO" NAME="shadingType" value="0" onclick="startCamera()" CHECKED>Gourand shading
+        <INPUT TYPE="RADIO" NAME="shadingType" value="1" onclick="startCamera()">Phong shading<br><br>
+        <input type="button" class="buttons" value="PPM Data" onclick="display()">
+        <h id="show"></h>
+        <script type="text/javascript" src="hw2.js"></script>
+        <script type="text/javascript" src="hw3.js"></script>
+        <script type="text/javascript" src="hw4.js"></script>
+    </body>
+</html>
