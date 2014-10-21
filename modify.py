@@ -1,6 +1,6 @@
 import string
-file = open("/Users/yuyangzhang/Desktop/homeworks/hw-3D/myhw4/POT4.ASC")
-out=open("/Users/yuyangzhang/Desktop/homeworks/hw-3D/myhw4/pot4.txt","w")
+file = open("/Users/yuyangzhang/Desktop/homeworks/hw-3D/myhw5/PPOT.ASC")
+out=open("/Users/yuyangzhang/Desktop/homeworks/hw-3D/myhw5/ppot.txt","w")
 line="start"
 s=0
 while line:

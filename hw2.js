@@ -101,7 +101,7 @@ function readFile(evt) {
 function analysisFile(fileStr){
     var line=fileStr.split('\n');
     mySV.triNumber=parseInt(line.length/3);
-    for(i=0;i<parseInt(line.length/3);i++){    
+    for(i=0;i<parseInt(line.length/3);i++){   
         mySV.triangle[i][0]=line[i*3].split(',');
         mySV.triangle[i][1]=line[i*3+1].split(',');
         mySV.triangle[i][2]=line[i*3+2].split(',');

@@ -14,7 +14,7 @@ function CameraParameter(){
     this.rotateX=-30;
     this.rotateY=0;
     this.rotateZ=10;
-    this.fov=53.7;
+    this.fov=63.7;
     this.lookatX=0.8;
     this.lookatY=0.7;
     this.lookatZ=4.5;
@@ -116,7 +116,7 @@ function initialText(){
     document.getElementById("worldupX").value=-0.2;
     document.getElementById("worldupY").value=1;
     document.getElementById("worldupZ").value=0;
-    document.getElementById("FOV").value=53.7;
+    document.getElementById("FOV").value=63.7;
 }
 function CreateScaleMatrix(coordinate){
     return [[coordinate.x,0,0,0],[0,coordinate.y,0,0],[0,0,coordinate.z,0],[0,0,0,1]];
@@ -216,7 +216,7 @@ function getSnapshot(){
     PushMatrix(translationMatrix);
     SetCamera();
     ClearCanvas();
-    for(triN=0;triN<896;triN++){  
+    for(triN=0;triN<mySV.triNumber;triN++){  
         //drawTriangleForcamera(triN);
         drawTriangleForShading(triN);
     }

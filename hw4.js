@@ -31,8 +31,8 @@ function StateVariables(){
 function initialStateVariables(){
     mySV.triNumber=0;
     mySV.output="P3<br>256 256<br>255<br>";
-    mySV.triangle=new Array(896);
-    for (k=0;k<896;k++){
+    mySV.triangle=new Array(898);
+    for (k=0;k<898;k++){
         mySV.triangle[k]=new Array(3);
         for (i=0;i<3;i++){
             mySV.triangle[k][i]=new Array(7);
