@@ -2,12 +2,13 @@ var zbuffer=new Array();
 for (k=0;k<70000;k++)
     zbuffer[k]=0;
 
-function point(x,y,z,n){
+function point(x,y,z,n,t){
     this.x=x||0;
     this.y=y||0;
     this.z=z||0;
     this.norm=n||new Color(0,0,0);
     this.w=0;
+    this.texture=t;
 }
 
 function realTriangle(p0,p1,p2){
@@ -83,6 +84,7 @@ function showPPMString(output){
 }
 
 function readFile(evt) {
+    mySV.line=mySV.textureStr.split(',');
     var files = evt.target.files;
     var f=files[0];
     var fileBuffer=f;

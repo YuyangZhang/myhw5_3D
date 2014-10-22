@@ -24,6 +24,7 @@ function CameraParameter(){
     this.positionX=13.2;
     this.positionY=-8.7;
     this.positionZ=-14.8;
+    this.line="";
 }
 
 function MatrixStack(){
@@ -218,7 +219,8 @@ function getSnapshot(){
     ClearCanvas();
     for(triN=0;triN<mySV.triNumber;triN++){  
         //drawTriangleForcamera(triN);
-        drawTriangleForShading(triN);
+        //drawTriangleForShading(triN);
+        drawTriangleForTexture(triN);
     }
     flushCanvasToScreen(mySV.imageData);
     mySV.c.putImageData(mySV.imageData,0,0);
@@ -247,30 +249,6 @@ function SetCamera(){
     PushMatrix(myCamera.Miw);
     PushMatrix(myCamera.Mpi);
     PushMatrix(mySV.Msp);
-}
-
-function drawTriangleForcamera(triIndex){
-    var x0=parseFloat(mySV.triangle[triIndex][0][0]);
-    var y0=parseFloat(mySV.triangle[triIndex][0][1]);
-    var z0=parseFloat(mySV.triangle[triIndex][0][2]);
-    var x1=parseFloat(mySV.triangle[triIndex][1][0]);
-    var y1=parseFloat(mySV.triangle[triIndex][1][1]);
-    var z1=parseFloat(mySV.triangle[triIndex][1][2]);
-    var x2=parseFloat(mySV.triangle[triIndex][2][0]);
-    var y2=parseFloat(mySV.triangle[triIndex][2][1]);
-    var z2=parseFloat(mySV.triangle[triIndex][2][2]);
-    var r=parseFloat(mySV.triangle[triIndex][0][3]);
-    var g=parseFloat(mySV.triangle[triIndex][0][4]);
-    var b=parseFloat(mySV.triangle[triIndex][0][5]);
-    var a=0xff;
-    var m0=mulMat(myMatrix,[[x0],[y0],[z0],[1]]);
-    var m1=mulMat(myMatrix,[[x1],[y1],[z1],[1]]);
-    var m2=mulMat(myMatrix,[[x2],[y2],[z2],[1]]);
-
-    var point0=new point(Math.round(m0[0][0]),Math.round(m0[1][0]),Math.round(m0[2][0]),0);
-    var point1=new point(Math.round(m1[0][0]),Math.round(m1[1][0]),Math.round(m1[2][0]),0);
-    var point2=new point(Math.round(m2[0][0]),Math.round(m2[1][0]),Math.round(m2[2][0]),0);
-    fillinTriangle(point0,point1,point2,r,g,b,a);
 }
 
 function resetCamera(){
