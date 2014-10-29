@@ -13,6 +13,7 @@
             }
             .forms{
                 width: 600px;
+                
             }
             #canvasTd{
                 width: 600px
@@ -29,12 +30,21 @@
 
                         </canvas>
                         <br/><br/>
-                        <input type="file" id="files" name="files[]" multiple />
-                        <input type="file" id="texture" name="files[]" multiple />
+                        <table>
+                            <tr><td>Please choose a texture file:</td><td><input type="file" id="texture" name="files[]" multiple /></td></tr>
+                            <tr><td>Please choose a data file:</td><td><input type="file" id="files" name="files[]" multiple /></td></tr><tr><td></td></tr>
+                        </table>
+                        <br/>
+                        <table>
+                            <tr><td><INPUT TYPE="RADIO" NAME="shadingType" value="0" onclick="startCamera()" >Gourand shading<INPUT TYPE="RADIO" NAME="shadingType" value="1" onclick="startCamera()" CHECKED>Phong shading</td></tr>
+                            <tr><td><INPUT TYPE="RADIO" NAME="textureType" value="0" onclick="startCamera()" CHECKED>From an image<INPUT TYPE="RADIO" NAME="textureType" value="1" onclick="startCamera()" >Procedure texture</td></tr>
+                                
+                        </table>
+                        <br/><br/><input type="button" class="buttons" value="PPM Data" onclick="display()">
                     </div>
                 </td>
                 <td class="forms">
-                     <h2>Move Camera<h><font size="3">&nbsp;&nbsp;</font></h></h2>
+                     <h2>Move Camera</h2>
                     <table>
                         <tr>
                             <td>Move in line:&nbsp;&nbsp;</td>
@@ -59,14 +69,9 @@
                         <input type="button" class="buttons" id="begin" value="Rotate Pot!" onclick="movePot()">
                         <!--<input type="button" class="buttons" id="end" value="End!">-->
                     </div>
-                </td>
-            </tr>
-        </table>
-            <br/>
-        <table>
-            <tr>
-                <td id="cameraview" class="forms">
-                    <h2>Camera Settings<h><font size="3">&nbsp;&nbsp;</font></h></h2>
+                    
+                    
+                    <h2>Camera Settings</h2>
                     <table>
                         <tr>
                             <td>Position:&nbsp;&nbsp;</td>
@@ -97,9 +102,10 @@
                         <input type="button" class="buttons" value="Change camera settings!" onclick="resetCamera()">
                         <!--<input type="button" class="buttons" id="end" value="End!">-->
                     </div>
-                </td>
-                <td class="forms">
-                    <h2>Transform Pot<h><font size="3">&nbsp;&nbsp;</font></h></h2>
+                    
+                    
+                    
+                    <h2>Transform Pot</h2>
                     <table>
                         <tr>
                             <td>Scale</td>
@@ -121,14 +127,11 @@
                         </tr>
                         <br/>
                     </table>
+                    
                 </td>
-                
             </tr>
         </table>
-        <br/><br/>
-        <INPUT TYPE="RADIO" NAME="shadingType" value="0" onclick="startCamera()" >Gourand shading
-        <INPUT TYPE="RADIO" NAME="shadingType" value="1" onclick="startCamera()" CHECKED>Phong shading<br><br>
-        <input type="button" class="buttons" value="PPM Data" onclick="display()">
+        
         <h id="show"></h>
         <script type="text/javascript" src="hw2.js"></script>
         <script type="text/javascript" src="hw3.js"></script>

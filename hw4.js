@@ -15,7 +15,6 @@ function StateVariables(){
     this.element="";
     this.c="";
     this.imageData="";
-    this.Msp=1;
     //New sets for Hw4.
     this.Mtc=1;
     this.ambientLight=new Light();
@@ -42,7 +41,7 @@ function initialStateVariables(){
             }
         }
     }
-    mySV.Msp=[[128,0,0,128],[0,-128,0,128],[0,0,100,0],[0,0,0,1]];  
+    
 }
 function InterpolationType(flag){
     if (flag==true){

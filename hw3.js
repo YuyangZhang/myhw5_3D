@@ -8,12 +8,12 @@ function CameraParameter(){
     this.scaleX=2;
     this.scaleY=2;
     this.scaleZ=2;
-    this.tranX=16;
-    this.tranY=-10;
+    this.tranX=15;
+    this.tranY=-1;
     this.tranZ=1;
-    this.rotateX=-30;
-    this.rotateY=0;
-    this.rotateZ=10;
+    this.rotateX=30;
+    this.rotateY=-30;
+    this.rotateZ=-60;
     this.fov=63.7;
     this.lookatX=0.8;
     this.lookatY=0.7;
@@ -21,8 +21,8 @@ function CameraParameter(){
     this.worldupX=-0.2;
     this.worldupY=1;
     this.worldupZ=0;
-    this.positionX=13.2;
-    this.positionY=-8.7;
+    this.positionX=9.2;
+    this.positionY=-14.2;
     this.positionZ=-14.8;
     this.line="";
 }
@@ -74,9 +74,10 @@ Coordinate.prototype = {
 
 }
 
-function Camera(Miw,Mpi,position,lookat,worldup,fov){
+function Camera(Miw,Mpi,Msp,position,lookat,worldup,fov){
     this.Miw=Miw;
     this.Mpi=Mpi;
+    this.Msp=Msp;
     this.position=position;
     this.lookat=lookat;
     this.worldup=worldup;
@@ -87,6 +88,7 @@ function initialCamera(){
     //ClearCanvas();
     myCamera.Miw=[];
     myCamera.Mpi=[];
+    myCamera.Msp=[];
     myCamera.lookat=[];
     myCamera.position=[];
     myCamera.worldup=[];
@@ -102,14 +104,14 @@ function initialText(){
     document.getElementById("scaleX").value=2;
     document.getElementById("scaleY").value=2;
     document.getElementById("scaleZ").value=2;
-    document.getElementById("rotateX").value=-30;
-    document.getElementById("rotateY").value=0;
-    document.getElementById("rotateZ").value=10;
-    document.getElementById("translateX").value=16;
-    document.getElementById("translateY").value=-10;
+    document.getElementById("rotateX").value=30;
+    document.getElementById("rotateY").value=-30;
+    document.getElementById("rotateZ").value=-60;
+    document.getElementById("translateX").value=15;
+    document.getElementById("translateY").value=-1;
     document.getElementById("translateZ").value=1;
-    document.getElementById("positionX").value=13.2;
-    document.getElementById("positionY").value=-8.7;
+    document.getElementById("positionX").value=9.2;
+    document.getElementById("positionY").value=-14.2;
     document.getElementById("positionZ").value=-14.8;
     document.getElementById("lookatX").value=0.8;
     document.getElementById("lookatY").value=0.7;
@@ -242,13 +244,15 @@ function SetCamera(){
     var a3=right.x;
     var b3=right.y;
     var c3=right.z;
+    var Zmax=100000;
+    myCamera.Msp=[[128,0,0,128],[0,-128,0,128],[0,0,Zmax/d,0],[0,0,0,1]];  
     myCamera.Mpi=[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,1/d,1]];
     myCamera.Miw=[[a3,b3,c3,0-right.dot(myCamera.position)],[a2,b2,c2,0-myCamera.worldup.dot(myCamera.position)],[a1,b1,c1,0-myCamera.lookat.dot(myCamera.position)],[0,0,0,1]];
     //myCamera.Miw=[[a3,b3,c3,myCamera.position.x],[a2,b2,c2,myCamera.position.y],[a1,b1,c1,myCamera.position.z],[0,0,0,1]];
 
     PushMatrix(myCamera.Miw);
     PushMatrix(myCamera.Mpi);
-    PushMatrix(mySV.Msp);
+    PushMatrix(myCamera.Msp);
 }
 
 function resetCamera(){
@@ -331,16 +335,12 @@ function moveCamera(){
 
 function movePot(){
     var timeKeeper=1;
-    while(timeKeeper<=300){
-        setTimeout(function() {
-            //myParameter.positionX+=speedX/10;
-            //myParameter.positionZ+=speedZ/10;
-            myParameter.rotateX+=1;
-
-            getSnapshot();
-          }, timeKeeper*200);
-        timeKeeper+=1;
-    }
+    setInterval(function() {
+        //myParameter.positionX+=speedX/10;
+        //myParameter.positionZ+=speedZ/10;
+        myParameter.rotateX+=1;
+        getSnapshot();
+      }, 200);
 
 }
 

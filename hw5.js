@@ -1,9 +1,15 @@
 document.getElementById('texture').addEventListener('change',readTexture, false);
-
+var Zmax=100000;
 
 function Texture(u,v){
     this.u=u;
     this.v=v;
+}
+Texture.prototype = {
+    constructor: Texture,
+    scale: function(s){
+        return new Texture(this.u*s,this.v*s);
+    }
 }
 function readTexture(evt){
     var files = evt.target.files;
@@ -12,7 +18,6 @@ function readTexture(evt){
     var reader = new FileReader();
     reader.onload = (function(theFile) {
         return function(e) {
-            //console.log(e.target.result);
             fileStr=e.target.result;
             mySV.textureStr=fileStr;
         };
@@ -21,22 +26,36 @@ function readTexture(evt){
 }
 function FileTextureFunction(textStr,u,v){
     var line=mySV.line;
-    var scaleU=parseInt(u*255);
-    var scaleV=parseInt(v*255);
-    alert(scaleU,scaleV);
-    if(scaleU>255){
-        scaleU=255;
+    var scaleU=u*97;
+    var scaleV=v*108;
+    if(scaleU>97){
+        scaleU=97;
     }
     if(scaleU<0){
         scaleU=0;
     }
-    if(scaleV>255){
-        scaleV=255;
+    if(scaleV>108){
+        scaleV=108;
     }
     if(scaleV<0){
         scaleV=0;
     }
-    return new Color(line[scaleU*3+98*3*scaleV],line[scaleU*3+98*3*scaleV+1],line[scaleU*3+98*3*scaleV+2]);
+    var Au=Math.floor(scaleU);
+    var Av=Math.floor(scaleV);
+    var Bu=Au+1;
+    var Bv=Av;
+    var Cu=Au;
+    var Cv=Av+1;
+    var Du=Au+1;
+    var Dv=Av+1;
+    var s=scaleU-Au;
+    var t=scaleV-Av;
+    var Acolor= (new Color(line[Au*3+98*3*Av],line[Au*3+98*3*Av+1],line[Au*3+98*3*Av+2])).scale((1-s)*(1-t));
+    var Bcolor= (new Color(line[Bu*3+98*3*Bv],line[Bu*3+98*3*Bv+1],line[Bu*3+98*3*Bv+2])).scale(s*(1-t));
+    var Ccolor= (new Color(line[Cu*3+98*3*Cv],line[Cu*3+98*3*Cv+1],line[Cu*3+98*3*Cv+2])).scale(s*t);
+    var Dcolor= (new Color(line[Du*3+98*3*Dv],line[Du*3+98*3*Dv+1],line[Du*3+98*3*Dv+2])).scale((1-s)*t);
+    
+    return Acolor.add(Bcolor).add(Ccolor).add(Dcolor);
 }
 
 function interpolateTexture(ps,pe,now){
@@ -47,15 +66,27 @@ function interpolateTexture(ps,pe,now){
 }
 
 
+function ProceduralTextureFunction(u,v){
+    if(u>1/3&&u<2/3&&v>1/3&&v<2/3){
+        return new Color(0,0,0);
+    }
+    else{
+        return new Color(1,1,1);
+    }
+}
+
+
 function calculateColorWithTexture(norm,texture){
-    
-    var coeff=FileTextureFunction(mySV.textureStr,texture.u,texture.v);
+    if(document.getElementsByName("textureType")[0].checked){
+        var coeff=FileTextureFunction(mySV.textureStr,texture.u,texture.v);
+    }
+    else{
+        var coeff=ProceduralTextureFunction(texture.u,texture.v);
+    }
     var C0=calculateSingleColorWithTexture(norm,myEnum.DIRECTIONAL_LIGHT0,coeff);
     var C1=calculateSingleColorWithTexture(norm,myEnum.DIRECTIONAL_LIGHT1,coeff);
     var C2=calculateSingleColorWithTexture(norm,myEnum.DIRECTIONAL_LIGHT2,coeff);
     var realColor=new Color(0,0,0);
-    //alert(realColor.red);
-    //var tmpColor=new Color(myEnum.AMBIENT_LIGHT.color.red,myEnum.AMBIENT_LIGHT.color.green,myEnum.AMBIENT_LIGHT.color.blue);
     realColor.red=C0.red+C1.red+C2.red+coeff.red*myEnum.AMBIENT_LIGHT.color.red;
     realColor.green=C0.green+C1.green+C2.green+coeff.green*myEnum.AMBIENT_LIGHT.color.green;
     realColor.blue=C0.blue+C1.blue+C2.blue+coeff.blue*myEnum.AMBIENT_LIGHT.color.blue;
@@ -70,7 +101,6 @@ function calculateSingleColorWithTexture(norm,light,coeff){
     var RdotE=R.dot(E);
     var NdotL=N.dot(tmpL);
     var NdotE=N.dot(E);
-    //alert(RdotE,NdotL,NdotE);
     if(NdotE*NdotL<0){
         return new Color(0,0,0);
     }
@@ -112,14 +142,11 @@ function drawTriangleForTexture(triIndex){
     var v1=parseFloat(mySV.triangle[triIndex][1][7]);
     var u2=parseFloat(mySV.triangle[triIndex][2][6]);
     var v2=parseFloat(mySV.triangle[triIndex][2][7]);
-    var texture0=new Texture(u0,v0);
-    var texture1=new Texture(u1,v1);
-    var texture2=new Texture(u2,v2);
-    
     var a=0xff;
     var m0=mulMat(myMatrix,[[x0],[y0],[z0],[1]]);
     var m1=mulMat(myMatrix,[[x1],[y1],[z1],[1]]);
     var m2=mulMat(myMatrix,[[x2],[y2],[z2],[1]]);
+
     
     var norm0=new Color(r0,g0,b0);
     norm0=changeToImageNorm(norm0);
@@ -127,9 +154,15 @@ function drawTriangleForTexture(triIndex){
     norm1=changeToImageNorm(norm1);
     var norm2=new Color(r2,g2,b2);
     norm2=changeToImageNorm(norm2);
-    var point0=new point(Math.round(m0[0][0]),Math.round(m0[1][0]),Math.round(m0[2][0]),norm0,texture0);
-    var point1=new point(Math.round(m1[0][0]),Math.round(m1[1][0]),Math.round(m1[2][0]),norm1,texture1);
-    var point2=new point(Math.round(m2[0][0]),Math.round(m2[1][0]),Math.round(m2[2][0]),norm2,texture2);
+
+    var texture0=(new Texture(u0,v0)).scale((Zmax-m0[2][0])/Zmax);
+    var texture1=(new Texture(u1,v1)).scale((Zmax-m1[2][0])/Zmax);
+    var texture2=(new Texture(u2,v2)).scale((Zmax-m2[2][0])/Zmax);
+    
+    var point0=new point(Math.round(m0[0][0]),Math.round(m0[1][0]),m0[2][0],norm0,texture0);
+    var point1=new point(Math.round(m1[0][0]),Math.round(m1[1][0]),m1[2][0],norm1,texture1);
+    var point2=new point(Math.round(m2[0][0]),Math.round(m2[1][0]),m2[2][0],norm2,texture2);
+    
     fillinTriangleForTexture(point0,point1,point2,a);
     
 }
@@ -185,16 +218,8 @@ function fillinTriangleForTexture(p0,p1,p2,a){
     z2=t2.z;
     var thisTri=new realTriangle(t0,t1,t2);
     //
-    if(myType.type==1){
-        var tmp=calculateColorWithTexture(t0.norm,t0.texture);
-        t0.norm=tmp;
-        tmp=calculateColorWithTexture(t1.norm,t1.texture);
-        t1.norm=tmp;
-        tmp=calculateColorWithTexture(t2.norm,t2.texture);
-        t2.norm=tmp;
-    }
     if(y0==y1){
-        for(i=y0;i>y2;i--){            
+        for(i=y0;i>y2;i--){
             var realNormS=interpolateNorm(t0,t2,(i-y0)/(y2-y0));
             var realNormE=interpolateNorm(t1,t2,(i-y1)/(y2-y1));
             var realTextureS=interpolateTexture(t0,t2,(i-y0)/(y2-y0));
@@ -223,7 +248,6 @@ function fillinTriangleForTexture(p0,p1,p2,a){
             var realNormE=interpolateNorm(t0,t1,(i-y0)/(y1-y0));
             var realTextureS=interpolateTexture(t0,t2,(i-y0)/(y2-y0));
             var realTextureE=interpolateTexture(t0,t1,(i-y0)/(y1-y0));
-            
             var startPoint=new point(getX(x0,y0,x2,y2,i),i,0,realNormS,realTextureS);
             var endPoint=new point(getX(x0,y0,x1,y1,i),i,0,realNormE,realTextureE);
             drawBetweenLineForTexture(startPoint,endPoint,thisTri,a);
@@ -261,13 +285,15 @@ function drawBetweenLineForTexture(startPoint,endPoint,myTri,a){
         if (myType.type==0){
             var realNorm=interpolateNorm(startPoint,endPoint,(j-xs)/(xe-xs)).normal();
             var realTexture=interpolateTexture(startPoint,endPoint,(j-xs)/(xe-xs));
-            var realColor=calculateColorWithTexture(realNorm,realTexture);
+            
+            var realColor=calculateColorWithTexture(realNorm,realTexture.scale(Zmax/(Zmax-z)));
         }
         else if(myType.type==1){
-            var realColor=interpolateNorm(startPoint,endPoint,(j-xs)/(xe-xs));
+            var realNorm=interpolateNorm(startPoint,endPoint,(j-xs)/(xe-xs)).normal();
+            var realTexture=interpolateTexture(startPoint,endPoint,(j-xs)/(xe-xs));
             
+            var realColor=calculateColorWithTexture(realNorm,realTexture.scale(Zmax/(Zmax-z)));
         }
-        //alert("here!");
         setPixel(j,ynow,z,255*realColor.red,255*realColor.green,255*realColor.blue,a);
     }
 }
