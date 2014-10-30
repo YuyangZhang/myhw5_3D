@@ -36,10 +36,14 @@
                         </table>
                         <br/>
                         <table>
-                            <tr><td><INPUT TYPE="RADIO" NAME="shadingType" value="0" onclick="startCamera()" >Gourand shading<INPUT TYPE="RADIO" NAME="shadingType" value="1" onclick="startCamera()" CHECKED>Phong shading</td></tr>
-                            <tr><td><INPUT TYPE="RADIO" NAME="textureType" value="0" onclick="startCamera()" CHECKED>From an image<INPUT TYPE="RADIO" NAME="textureType" value="1" onclick="startCamera()" >Procedure texture</td></tr>
+                            <tr><td><INPUT TYPE="RADIO" NAME="shadingType" value="0" onclick="startCamera()" >Gourand shading</td><td><INPUT TYPE="RADIO" NAME="shadingType" value="1" onclick="startCamera()" CHECKED>Phong shading</td></tr>
+                            <tr><td><INPUT TYPE="RADIO" NAME="textureType" value="0" onclick="startCamera()" CHECKED>From an image</td><td><INPUT TYPE="RADIO" NAME="textureType" value="1" onclick="startCamera()" >Procedure texture</td></tr>
                                 
                         </table>
+                        <br/>
+                        Please use 'A' 'D' 'W' 'S' 'Q' 'E' on the keyboard to control the position of camera.<br/><br/>
+                        Use arraws on the keyboard to control the view of camera.<br/><br/>
+                        Use 'J' 'L' 'I' 'K' 'U' 'O' to rotate the teapot.
                         <br/><br/><input type="button" class="buttons" value="PPM Data" onclick="display()">
                     </div>
                 </td>
@@ -99,7 +103,7 @@
                     </table>
                     <div>
                         <input type="button" class="buttons" value="Initialize camera!" onclick="startCamera()">
-                        <input type="button" class="buttons" value="Change camera settings!" onclick="resetCamera()">
+                        <input type="button" class="buttons" value="Change settings!" onclick="resetCamera()">
                         <!--<input type="button" class="buttons" id="end" value="End!">-->
                     </div>
                     

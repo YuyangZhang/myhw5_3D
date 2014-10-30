@@ -67,11 +67,13 @@ function interpolateTexture(ps,pe,now){
 
 
 function ProceduralTextureFunction(u,v){
-    if(u>1/3&&u<2/3&&v>1/3&&v<2/3){
+    var fu=(Math.floor(4*u))%2;
+    var fv=(Math.floor(4*v))%2;
+    if((fu==0&&fv==0)||(fu==1&&fv==1)){
         return new Color(0,0,0);
     }
     else{
-        return new Color(1,1,1);
+        return new Color(100,100,100);
     }
 }
 
@@ -291,7 +293,6 @@ function drawBetweenLineForTexture(startPoint,endPoint,myTri,a){
         else if(myType.type==1){
             var realNorm=interpolateNorm(startPoint,endPoint,(j-xs)/(xe-xs)).normal();
             var realTexture=interpolateTexture(startPoint,endPoint,(j-xs)/(xe-xs));
-            
             var realColor=calculateColorWithTexture(realNorm,realTexture.scale(Zmax/(Zmax-z)));
         }
         setPixel(j,ynow,z,255*realColor.red,255*realColor.green,255*realColor.blue,a);
